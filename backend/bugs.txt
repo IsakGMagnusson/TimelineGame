@@ -1,0 +1,4 @@
+-Moving cards to quickly sets wrong active_card_index
+-Header in Hostgame
+
+https://socket.io/how-to/use-with-react

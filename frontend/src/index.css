@@ -1,0 +1,216 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+h1, h2, h3, p, label {
+  color: lightgray;
+}
+
+.squareBox {
+  display: flex;
+
+  overflow-wrap: break-word;
+  vertical-align: top;
+  text-align: left;
+  border-style: solid;
+}
+
+.active-cards {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+
+  flex-direction: row;
+}
+
+.active-cards-h2 {
+
+  font-family: monospace;
+}
+
+.square {
+  display: flex;
+  width: 200px;
+  height: 250px;
+  overflow-wrap: break-word;
+  vertical-align: top;
+  text-align: center;
+  border-style: solid;
+  margin-right: 10px;
+}
+
+.square.active {
+  background-color: rgb(139, 141, 16);
+}
+.square.locked {
+  background-color: rgb(99, 94, 94);
+}
+.square.placed {
+  background-color: rgb(62, 119, 74);
+}
+
+.square.removed {
+  background-color: rgb(119, 18, 18);
+}
+
+.remove {
+  animation: fade-in-keyframes 3s;
+}
+
+
+@keyframes fade-in-keyframes {
+  from {opacity: 1}
+  to {opacity: 0}
+}
+
+
+.fullwidth {
+  min-height: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.controller {
+  width: 100%;
+  height: 80%;
+}
+
+.next-turn-button {
+  height:80%;
+  width: 40%;
+  background-color: antiquewhite;
+  margin-right: 0px;
+
+}
+
+.swipe-div {
+  height:100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.swipe.instructions {
+  height:100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+}
+
+.swipe.h2 {
+  color: aqua;
+  margin-left: 25;
+  margin-right: 25;
+}
+
+.swipe.h2.selected {
+  margin-left: 25;
+  margin-right: 25;
+  color: aqua;
+  text-shadow: 0px 0px 50px rgb(209, 149, 209),0px 0px 50px rgb(221, 120, 213),0px 0px 50px rgb(211, 112, 194),0px 0px 10px #812f76,0px 0px 10px #daa6cd;
+
+}
+
+
+.put-card-button {
+  height:50%;
+  width: 40%;
+  background-color: antiquewhite;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  
+}
+
+.rotation-button {
+  height: 90%;
+  width: 25%;
+  background-color: antiquewhite;
+
+}
+
+.rotation-button.left {
+  margin-right: 0px;
+
+}
+
+.rotation-button.right {
+  margin-left: auto
+}
+  
+.turn-box {
+  background-color: rgb(9, 80, 15);
+  overflow-wrap: break-word;
+  margin: 0 auto;
+  width: 20%;
+  border-style: solid;
+  border-color: beige;
+}
+
+.joinStuff {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.joinedplayerslist {
+  margin-top: 5%;
+  position: relative;
+  background-color: rgb(44, 100, 122);
+  overflow-wrap: break-word;
+  border-style: solid;
+
+}
+
+.playerbox {
+  position: relative;
+  background-color: rgb(44, 100, 122);
+  overflow-wrap: break-word;
+  border-style: solid;
+}
+
+.joinCode {
+  position: relative;
+  background-color: rgb(92, 29, 66);
+  overflow-wrap: break-word;
+  border-style: solid;
+}
+
+.settingsContainer {
+  position: absolute;
+  background-color: rgb(5, 61, 65);
+  overflow-wrap: break-word;
+  border-style: solid;
+  border: 3px solid;
+  box-sizing: border-box;
+  height: 100%;
+  width: 50%;
+  left: 50%;
+}
+
+.settings{
+  position: absolute;
+  display: flex; 
+  flex-direction: column;     /* stack flex items vertically */
+  justify-content: left;    /* center items vertically, in this case */
+  align-items: left;        /* center items horizontally, in this case */
+  text-align: left;
+}
+
+
+
