@@ -2,18 +2,17 @@
 import React, { useState } from "react";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
+import { useSetName } from "../hooks/UseSetName";
 
 function App() {
-  const [inputName, setInputName] = useState("");
+  //const [inputName, setInputName] = useState("");
+  const [name, generateRandomName, readName] = useSetName();
+
   const [inputGameCode, setInputGameCode] = useState("");
   const [attemptedGameCode, setAttemptedGameCode] = useState("");
   const [isGameCodeValid, setIsGameCodeValid] = useState(true);
 
   const navigate = useNavigate();
-
-  const changeInputName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputName(event.target.value);
-  };
 
   const changeGameCode = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputGameCode(event.target.value);
@@ -35,7 +34,7 @@ function App() {
       .then((data) => {
         if (data.isGameCodeValid)
           navigate("/Game", {
-            state: { gameCode: inputGameCode, name: inputName },
+            state: { gameCode: inputGameCode, name: name },
           });
         else {
           setIsGameCodeValid(data.isGameCodeValid);
@@ -62,8 +61,10 @@ function App() {
               type="text"
               id="fname"
               name="fname"
-              onChange={changeInputName}
+              onChange={(e) => readName(e.target.value)}
+              value={name}
             />
+            <button onClick={generateRandomName}>random</button>
           </div>
           <div>
             Gamecode:

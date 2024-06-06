@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CardData, Card_State } from "../../interfaces";
 import Card from "./Card";
 import { socket } from "../../Socket";
-import * as Utils from "../../Utils";
+import * as Utils from "../../util/Utils";
 
 const TimeLine = (props: any) => {
   const [activeCardDisplayDate, setActiveCardDisplayDate] =
