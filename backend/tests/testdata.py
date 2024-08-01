@@ -82,12 +82,6 @@ testcards: list[Card] = [
         "date": 1946,
         "state": 1,
     },
-    {"question": "What year was Max von Sydow born?1929", "date": 1929, "state": 1},
-    {
-        "question": "What year was Harry Martinson born?1904",
-        "date": 1904,
-        "state": 1,
-    },
     {
         "question": "What year was Carl XII of Sweden born?1682",
         "date": 1682,

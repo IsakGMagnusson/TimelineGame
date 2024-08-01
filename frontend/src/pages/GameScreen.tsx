@@ -9,6 +9,7 @@ import WinScreen from "./WinScreen";
 import TimeLine from "../components/Timeline/TimeLine";
 import { socket } from "../Socket";
 import PlayerNameBox from "../components/PlayerNameBox";
+import GamecodeBox from "../components/GamecodeBox";
 
 function HostGame() {
   const [gameCode, setGameCode] = useState<string>("");
@@ -79,20 +80,27 @@ function HostGame() {
           {!isGameStarted ? (
             <>
               <div className="joinStuff">
-                <div className="joinCode">
-                  <h2>{gameCode}</h2>
-                </div>
+                <GamecodeBox gamecode={gameCode} />
                 <JoinedList joinedPlayers={joinedPlayers} />
               </div>
               <InputSettingsDisplay gameCode={gameCode} />
             </>
           ) : (
             <>
-              {[...disconnectedPlayers].map((name) => (
-                <p>{name}</p>
-              ))}
-              <PlayerNameBox name={activePlayerName} />
-              <TimeLine gameCode={gameCode} />
+              {disconnectedPlayers.length > 0 ? (
+                <>
+                  <GamecodeBox gamecode={gameCode} />
+                  <h1>Disconnected players:</h1>
+                  {[...disconnectedPlayers].map((name) => (
+                    <PlayerNameBox name={name} />
+                  ))}
+                </>
+              ) : (
+                <>
+                  <PlayerNameBox name={activePlayerName} />
+                  <TimeLine gameCode={gameCode} />
+                </>
+              )}
             </>
           )}
         </>

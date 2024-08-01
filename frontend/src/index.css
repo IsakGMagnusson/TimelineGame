@@ -1,18 +1,22 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
-h1, h2, h3, p, label {
+h1,
+h2,
+h3,
+p,
+label {
   color: lightgray;
 }
 
@@ -36,7 +40,6 @@ h1, h2, h3, p, label {
 }
 
 .active-cards-h2 {
-
   font-family: monospace;
 }
 
@@ -69,12 +72,14 @@ h1, h2, h3, p, label {
   animation: fade-in-keyframes 3s;
 }
 
-
 @keyframes fade-in-keyframes {
-  from {opacity: 1}
-  to {opacity: 0}
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
-
 
 .fullwidth {
   min-height: 100%;
@@ -90,26 +95,24 @@ h1, h2, h3, p, label {
 }
 
 .next-turn-button {
-  height:80%;
+  height: 80%;
   width: 40%;
   background-color: antiquewhite;
   margin-right: 0px;
-
 }
 
 .swipe-div {
-  height:100%;
+  height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0);
 }
 
 .swipe.instructions {
-  height:100%;
+  height: 100%;
   width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
-
 }
 
 .swipe.h2 {
@@ -122,37 +125,33 @@ h1, h2, h3, p, label {
   margin-left: 25;
   margin-right: 25;
   color: aqua;
-  text-shadow: 0px 0px 50px rgb(209, 149, 209),0px 0px 50px rgb(221, 120, 213),0px 0px 50px rgb(211, 112, 194),0px 0px 10px #812f76,0px 0px 10px #daa6cd;
-
+  text-shadow: 0px 0px 50px rgb(209, 149, 209), 0px 0px 50px rgb(221, 120, 213),
+    0px 0px 50px rgb(211, 112, 194), 0px 0px 10px #812f76, 0px 0px 10px #daa6cd;
 }
 
-
 .put-card-button {
-  height:50%;
+  height: 50%;
   width: 40%;
   background-color: antiquewhite;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  
 }
 
 .rotation-button {
   height: 90%;
   width: 25%;
   background-color: antiquewhite;
-
 }
 
 .rotation-button.left {
   margin-right: 0px;
-
 }
 
 .rotation-button.right {
-  margin-left: auto
+  margin-left: auto;
 }
-  
+
 .turn-box {
   background-color: rgb(9, 80, 15);
   overflow-wrap: break-word;
@@ -174,7 +173,6 @@ h1, h2, h3, p, label {
   background-color: rgb(44, 100, 122);
   overflow-wrap: break-word;
   border-style: solid;
-
 }
 
 .playerbox {
@@ -185,7 +183,6 @@ h1, h2, h3, p, label {
 }
 
 .joinCode {
-  position: relative;
   background-color: rgb(92, 29, 66);
   overflow-wrap: break-word;
   border-style: solid;
@@ -203,14 +200,11 @@ h1, h2, h3, p, label {
   left: 50%;
 }
 
-.settings{
+.settings {
   position: absolute;
-  display: flex; 
-  flex-direction: column;     /* stack flex items vertically */
-  justify-content: left;    /* center items vertically, in this case */
-  align-items: left;        /* center items horizontally, in this case */
+  display: flex;
+  flex-direction: column; /* stack flex items vertically */
+  justify-content: left; /* center items vertically, in this case */
+  align-items: left; /* center items horizontally, in this case */
   text-align: left;
 }
-
-
-

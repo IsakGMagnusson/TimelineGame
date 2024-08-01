@@ -1,6 +1,5 @@
 import json
 
-
 class Game:
     def __init__(self, socket_id, gamecode):
         self.socket_id = socket_id
@@ -32,7 +31,6 @@ class Card:
     def toJson(self):
         return {"question": self.question, "date": self.date, "state": self.state}
 
-
 class Card_State:
     IN_PILE = 0
     LOCKED = 1
@@ -40,7 +38,6 @@ class Card_State:
     PLACED = 3
     REMOVED = 4
     ANIMATE = 5
-
 
 class Player:
     def __init__(self, socket_id, name):
@@ -65,7 +62,6 @@ class Player:
         for card in self.timeline:
             if card["state"] == from_state:
                 card["state"] = to_state
-
 
 class Setting:
     def __init__(self, description, query, type):

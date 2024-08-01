@@ -10,7 +10,7 @@ function App() {
 
   const [inputGameCode, setInputGameCode] = useState("");
   const [attemptedGameCode, setAttemptedGameCode] = useState("");
-  const [isGameCodeValid, setIsGameCodeValid] = useState(true);
+  const [joinErrorCode, setJoinErrorCode] = useState("");
 
   const navigate = useNavigate();
 
@@ -28,16 +28,19 @@ function App() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ gamecode: inputGameCode }),
+      body: JSON.stringify({ gamecode: inputGameCode, name: name }),
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.isGameCodeValid)
+        if (data.joinError.length == 0)
           navigate("/Game", {
-            state: { gameCode: inputGameCode, name: name },
+            state: {
+              gameCode: inputGameCode,
+              name: name,
+            },
           });
         else {
-          setIsGameCodeValid(data.isGameCodeValid);
+          setJoinErrorCode(data.joinError);
           setAttemptedGameCode(inputGameCode);
         }
       });
@@ -84,7 +87,7 @@ function App() {
             Join Game
           </button>
         </div>
-        {isGameCodeValid ? "" : `No game with code "${attemptedGameCode}"`}
+        {joinErrorCode}
       </header>
     </div>
   );

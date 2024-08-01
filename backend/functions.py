@@ -57,7 +57,7 @@ def get_cards(gameCode: str) -> list[Card]:
 
 
 def is_player_turn(gameCode: str, player: Player) -> bool:
-    return get_active_player(gameCode).socket_id == player.socket_id
+    return get_active_player(gameCode).name == player.name
 
 
 # def get_all_cards_in_play(gamecode, player) -> []:

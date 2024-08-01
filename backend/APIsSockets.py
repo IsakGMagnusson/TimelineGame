@@ -14,48 +14,65 @@ import time
 # https://github.com/zauberzeug/nicegui/issues/209
 Payload.max_decode_packets = 50
 
-
 @socketio.on("connect")
 def handle_connect():
     print("Client connected!")
-
 
 @socketio.on("fetch_all_settings")
 def fetch_all_settings():
     settings_descriptions = [item.get_description_json() for item in all_settings]
     emit("receive_settings", {"allSettings": settings_descriptions}, broadcast=True)
 
+def fetch_joined_names(gameCode):
+    player_names = []
+    for player in games[gameCode].players:
+        player_names.append(player.name)
+    socketio.emit(
+        "users", {"joinedPlayerNames": player_names}, room=get_game(gameCode).socket_id
+    )
 
 def ping_clients(gamecode):
     Timer(6, ping_clients, gamecode).start()
     if len(get_players(gamecode)) == 0:
         return
-
-    print(get_game(gamecode).disconnected_players)
+    
     for player in get_players(gamecode):
         socketio.emit(
             "server_send_ping",
             room=player.socket_id,
         )
     time.sleep(3)
+    if get_game(gamecode).is_game_started:
+        get_game(gamecode).disconnected_players = []
+        for player in get_players(gamecode):
+            if player.name not in get_game(gamecode).pings_from_players:
+                if player.name not in get_game(gamecode).disconnected_players:
+                    get_game(gamecode).disconnected_players.append(player.name)
+
+    if not get_game(gamecode).is_game_started:
+        for player in get_players(gamecode):
+            if player.name not in get_game(gamecode).pings_from_players:
+                get_game(gamecode).players = [x for x in get_game(gamecode).players if x.name != player.name]
+        fetch_joined_names(gamecode)
+
+    #if len(get_game(gamecode).disconnected_players) > 0:
+    socketio.emit(
+        "inform_disconnect",
+        {"disconnected_players": get_game(gamecode).disconnected_players},
+        room=get_game(gamecode).socket_id,
+    )
     for player in get_players(gamecode):
-        if player.name not in get_game(gamecode).pings_from_players:
-            if player.name not in get_game(gamecode).disconnected_players:
-                get_game(gamecode).disconnected_players.append(player.name)
-
-    if len(get_game(gamecode).disconnected_players) > 0:
         socketio.emit(
-            "inform_disconnect",
-            {"disconnected_players": get_game(gamecode).disconnected_players},
-            room=get_game(gamecode).socket_id,
+            "send_disconnected_playernames",
+            {"playernames": get_game(gamecode).disconnected_players},
+            room=player.socket_id,
         )
-    get_game(gamecode).pings_from_players = []
 
+    get_game(gamecode).pings_from_players = []
 
 @socketio.on("user_send_pong")
 def user_send_pong(gamecode, player_name):
     get_game(gamecode).pings_from_players.append(player_name)
-
 
 @socketio.on("create_game")
 def create_game():
@@ -65,7 +82,6 @@ def create_game():
     games.update({gamecode: game})
     socketio.emit("create_game", {"gamecode": gamecode}, room=game.socket_id)
     ping_clients(gamecode)
-
 
 @socketio.on("confirm_settings")
 def confirm_settings(gameCode, confirmedSettings):
@@ -104,7 +120,6 @@ def confirm_settings(gameCode, confirmedSettings):
         room=get_game(gameCode).socket_id,
     )
 
-
 @socketio.on("fetch_cards")
 def fetch_cards(gameCode):
     all_cards = get_active_player(gameCode).timeline.copy()
@@ -115,19 +130,31 @@ def fetch_cards(gameCode):
         room=get_game(gameCode).socket_id,
     )
 
-
 @socketio.on("user_join")
 def handle_user_join(gameCode, name):
-    player = Player(request.sid, name)
-    games[gameCode].players.append(player)
-    player_names = []
-    for player in games[gameCode].players:
-        player_names.append(player.name)
-    emit(
-        "users", {"joinedPlayerNames": player_names}, room=get_game(gameCode).socket_id
-    )
+    if not get_game(gameCode).is_game_started:
+        player = Player(request.sid, name)
+        games[gameCode].players.append(player)
+        get_game(gameCode).pings_from_players.append(player.name)
+    
+    elif get_game(gameCode).is_game_started:
+        socketio.emit(
+            "reconnect",
+            {"disconnectedPlayers": get_game(gameCode).disconnected_players},
+            room=request.sid,
+        )
 
-    emit("start_ping", room=request.sid)
+@socketio.on("reconnect")
+def reconnect(gameCode, name):
+    for player in get_players(gameCode):
+        if player.name == name:
+            player.socket_id = request.sid
+            get_game(gameCode).pings_from_players.append(player.name)
+            socketio.emit(
+                "reconnect_as_player",
+                {"isMyTurn": is_player_turn(gameCode, player)},
+                room=player.socket_id,
+            )
 
 
 @socketio.on("move_card")
@@ -143,7 +170,6 @@ def move_card(gameCode, move_to_index):
         {"new_index": get_game(gameCode).card_index, "old_index": old_index},
         room=get_game(gameCode).socket_id,
     )
-
 
 @socketio.on("put_card")
 def put_card(gameCode):
@@ -198,14 +224,12 @@ def put_card(gameCode):
             Card_State.ANIMATE, Card_State.REMOVED
         )
 
-
 @socketio.on("draw_card_or_new_turn")
 def draw_card_or_new_turn(gameCode):
     emit(
         "put_card_correct",
         room=get_active_player(gameCode).socket_id,
     )
-
 
 @socketio.on("draw_card")
 def draw_card(gameCode):
@@ -223,7 +247,6 @@ def draw_card(gameCode):
         },
         room=get_game(gameCode).socket_id,
     )
-
 
 @socketio.on("go_next_turn")
 def go_next_turn(gameCode):
