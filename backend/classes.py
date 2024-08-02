@@ -1,5 +1,3 @@
-import json
-
 class Game:
     def __init__(self, socket_id, gamecode):
         self.socket_id = socket_id
