@@ -18,8 +18,26 @@ def send_joined_names(gameCode):
         "users", {"joinedPlayerNames": player_names}, room=get_game(gameCode).socket_id
     )
 
+
+def user_send_pong(gamecode, player_name):
+    get_game(gamecode).pings_from_players.append(player_name)
+
+def create_game():
+    gamecode = generate_code(1)
+    game = Game(request.sid, gamecode)
+    # Add (gamecode, gamestate) to hashmap
+    games.update({gamecode: game})
+    socketio.emit("create_game", {"gamecode": gamecode}, room=game.socket_id)
+    init_pinging(gamecode)
+
+def init_pinging(gamecode):
+    while True:
+        ping_clients(gamecode)
+        time.sleep(3)
+        handle_pings(gamecode)
+        time.sleep(3)
+
 def ping_clients(gamecode):
-    Timer(6, ping_clients, gamecode).start()
     if len(get_players(gamecode)) == 0:
         return
     
@@ -29,7 +47,7 @@ def ping_clients(gamecode):
             room=player.socket_id,
         )
 
-    time.sleep(3)
+def handle_pings(gamecode):
     if get_game(gamecode).is_game_started:
         get_game(gamecode).disconnected_players = []
         for player in get_players(gamecode):
@@ -55,17 +73,6 @@ def ping_clients(gamecode):
         )
 
     get_game(gamecode).pings_from_players = []
-
-def user_send_pong(gamecode, player_name):
-    get_game(gamecode).pings_from_players.append(player_name)
-
-def create_game():
-    gamecode = generate_code(1)
-    game = Game(request.sid, gamecode)
-    # Add (gamecode, gamestate) to hashmap
-    games.update({gamecode: game})
-    socketio.emit("create_game", {"gamecode": gamecode}, room=game.socket_id)
-    ping_clients(gamecode)
 
 def handle_user_join(gameCode, name):
     if not get_game(gameCode).is_game_started:
