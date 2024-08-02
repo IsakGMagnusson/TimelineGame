@@ -3,6 +3,7 @@ import json
 class Game:
     def __init__(self, socket_id, gamecode):
         self.socket_id = socket_id
+        self.score_to_win = 10
         self.gamecode = gamecode
         self.is_game_started = False
         self.cards = []

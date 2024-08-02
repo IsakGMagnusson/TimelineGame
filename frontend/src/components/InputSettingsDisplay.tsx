@@ -2,10 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Setting } from "../interfaces";
 import { socket } from "../Socket";
+import useCount from "../hooks/useCount";
 
 function InputSettingsDisplay(props: any) {
   const [allSettings, setAllSettings] = useState<Setting[]>([]);
   const [checkedSettings, setCheckedSettings] = useState<boolean[]>([]);
+  const { count, increment, decrement } = useCount(10);
 
   useEffect(() => {
     socket.emit("fetch_all_settings");
@@ -16,7 +18,7 @@ function InputSettingsDisplay(props: any) {
   }, []);
 
   const confirmSettings = () => {
-    socket.emit("confirm_settings", props.gameCode, checkedSettings);
+    socket.emit("confirm_settings", props.gameCode, checkedSettings, count);
   };
 
   const updateSettings = (position: number) => {
@@ -45,6 +47,11 @@ function InputSettingsDisplay(props: any) {
             </div>
           );
         })}
+      </div>
+      <div className="pickScoreContainer">
+        <button onClick={decrement}>-</button>
+        <p>{count}</p>
+        <button onClick={increment}>+</button>
       </div>
       <button
         onClick={() => {

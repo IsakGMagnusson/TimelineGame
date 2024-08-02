@@ -84,7 +84,7 @@ def create_game():
     ping_clients(gamecode)
 
 @socketio.on("confirm_settings")
-def confirm_settings(gameCode, confirmedSettings):
+def confirm_settings(gameCode, confirmedSettings, win_score):
     cards = testcards
     # cards = get_cards_from_selected_settings(confirmedSettings)
     random.shuffle(cards)
@@ -99,6 +99,7 @@ def confirm_settings(gameCode, confirmedSettings):
         )
 
     # Set gamedata
+    games[gameCode].score_to_win = win_score
     games[gameCode].active_card = get_game(gameCode).draw_card()
     games[gameCode].active_card["state"] = Card_State.ACTIVE
     games[gameCode].is_game_started = True
@@ -177,13 +178,13 @@ def put_card(gameCode):
         get_active_player(gameCode).get_all_non_removed_cards()
     )
     sorted_cards.insert(get_game(gameCode).card_index, get_game(gameCode).active_card)
-
+    
     # If answer correct
     if is_date_in_order(sorted_cards, get_game(gameCode).card_index):
         get_active_player(gameCode).place_card(get_game(gameCode).active_card)
 
         # If won
-        if len(get_active_player(gameCode).get_all_non_removed_cards()) == 10:
+        if len(get_active_player(gameCode).get_all_non_removed_cards()) == get_game(gameCode).score_to_win:
             emit(
                 "player_won",
                 {

@@ -208,3 +208,10 @@ label {
   align-items: left; /* center items horizontally, in this case */
   text-align: left;
 }
+
+.pickScoreContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
