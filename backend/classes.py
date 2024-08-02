@@ -11,7 +11,6 @@ class Game:
         self.card_index = 0
         self.winners = []
         self.pings_from_players = []
-        self.disconnected_players = []
 
     def draw_card(self):
         card = self.cards.pop()
@@ -43,6 +42,7 @@ class Player:
         self.socket_id = socket_id
         self.name = name
         self.timeline = []
+        self.isConnected = True
 
     def get_all_non_removed_cards(self):
         return [card for card in self.timeline if card["state"] != Card_State.REMOVED]

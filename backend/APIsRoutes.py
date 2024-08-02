@@ -20,7 +20,7 @@ def join_game():
 def getError(gamecode, name):
     if not bool(gamecode in games): 
         return "Invalid code"
-    if get_game(gamecode).is_game_started and len(get_game(gamecode).disconnected_players) == 0:
+    if get_game(gamecode).is_game_started and all(x.isConnected for x in get_game(gamecode).players):
         return "Game has started and all players are connected"
     if len(name.strip()) == 0:
         return "Name not set"
