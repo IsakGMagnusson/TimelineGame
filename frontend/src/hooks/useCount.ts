@@ -7,8 +7,9 @@ function useCount(initialCount: number = 0) {
     setCount(Math.min(30, count + 1));
   };
 
+  const minScore = 2;
   const decrement = () => {
-    setCount(Math.max(0, count - 1));
+    setCount(Math.max(minScore, count - 1));
   };
 
   return {

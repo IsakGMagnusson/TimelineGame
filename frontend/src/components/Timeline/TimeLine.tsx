@@ -52,11 +52,13 @@ const TimeLine = (props: any) => {
       setAllActiveCards(data.all_cards);
       setActiveCardDisplayDate("????");
       socket.emit("draw_card_or_new_turn", props.gameCode);
+      props.setScore(data.all_cards.length);
     }
 
     function new_turn(data: any) {
       setAllActiveCards(data.all_cards);
       setActiveCardDisplayDate("????");
+      props.setScore(data.all_cards.length - 1);
     }
 
     socket.on("put_card_incorrect", on_put_card_incorrect);

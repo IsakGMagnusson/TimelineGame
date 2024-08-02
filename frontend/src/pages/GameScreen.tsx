@@ -15,11 +15,13 @@ function HostGame() {
   const [gameCode, setGameCode] = useState<string>("");
   const [joinedPlayers, setJoinedPlayers] = useState([]);
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
+  const [winScore, setWinScore] = useState<number>(0);
 
   const [activePlayerName, setActivePlayerName] = useState<string>("");
   const [winnerName, setWinnerName] = useState<string>("");
 
   const [disconnectedPlayers, setDisconnectedPlayers] = useState<string[]>([]);
+  const [score, setScore] = useState(1);
 
   useEffect(() => {
     socket.connect();
@@ -42,6 +44,7 @@ function HostGame() {
     function game_start_host(data: any) {
       setIsGameStarted(data.is_game_started);
       setActivePlayerName(data.active_player_name);
+      setWinScore(data.score_to_win);
     }
 
     function new_turn(data: any) {
@@ -98,7 +101,10 @@ function HostGame() {
               ) : (
                 <>
                   <PlayerNameBox name={activePlayerName} />
-                  <TimeLine gameCode={gameCode} />
+                  <div className="scoreContainer">
+                    {score} / {winScore}
+                  </div>
+                  <TimeLine gameCode={gameCode} setScore={setScore} />
                 </>
               )}
             </>

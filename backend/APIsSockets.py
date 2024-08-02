@@ -117,6 +117,7 @@ def confirm_settings(gameCode, confirmedSettings, win_score):
         {
             "is_game_started": get_game(gameCode).is_game_started,
             "active_player_name": get_active_player(gameCode).name,
+            "score_to_win": games[gameCode].score_to_win,
         },
         room=get_game(gameCode).socket_id,
     )
@@ -157,7 +158,6 @@ def reconnect(gameCode, name):
                 room=player.socket_id,
             )
 
-
 @socketio.on("move_card")
 def move_card(gameCode, move_to_index):
     old_index = get_game(gameCode).card_index
@@ -178,7 +178,7 @@ def put_card(gameCode):
         get_active_player(gameCode).get_all_non_removed_cards()
     )
     sorted_cards.insert(get_game(gameCode).card_index, get_game(gameCode).active_card)
-    
+
     # If answer correct
     if is_date_in_order(sorted_cards, get_game(gameCode).card_index):
         get_active_player(gameCode).place_card(get_game(gameCode).active_card)
