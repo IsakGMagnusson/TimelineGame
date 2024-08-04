@@ -1,3 +1,4 @@
+from typing import List
 from flask import request
 from flask_socketio import emit
 from classes import Game, Player
@@ -28,9 +29,6 @@ def init_pinging(gamecode):
         time.sleep(3)
 
 def ping_clients(gamecode):
-    if len(get_players(gamecode)) == 0:
-        return
-    
     for player in get_players(gamecode):
         socketio.emit(
             "server_send_ping",
@@ -38,32 +36,43 @@ def ping_clients(gamecode):
         )
 
 def handle_pings(gamecode):
+    if len(get_players(gamecode)) == 0:
+        return
+    
     for player in get_players(gamecode):
-        player.isConnected = True
-        if player.name not in get_game(gamecode).pings_from_players:
-            player.isConnected = False
+        player.isConnected = player.name in get_game(gamecode).pings_from_players
 
-    if not get_game(gamecode).is_game_started:
-        get_game(gamecode).players = [x for x in get_game(gamecode).players if x.isConnected]
-        socketio.emit(
-            "users", 
-            {"joinedPlayerNames": [x.name for x in get_game(gamecode).players if x.isConnected]}, 
-            room=get_game(gamecode).socket_id
-        )
+    if(not get_game(gamecode).is_game_started):
+        handle_disconnected_users_before_gamestart(gamecode)
+    elif(get_game(gamecode).is_game_started):
+        handle_disconnected_users_during_game(gamecode)
+    
+    get_game(gamecode).pings_from_players = []
 
+
+def handle_disconnected_users_before_gamestart(gamecode):
+    get_game(gamecode).players = [x for x in get_game(gamecode).players if x.isConnected]
+    socketio.emit(
+        "users", 
+        {"joinedPlayerNames": [x.name for x in get_game(gamecode).players if x.isConnected]}, 
+        room=get_game(gamecode).socket_id
+    )
+
+def handle_disconnected_users_during_game(gamecode):
+    disconnectedPlayerNames = [x.name for x in get_game(gamecode).players if not x.isConnected]
+    
     socketio.emit(
         "inform_disconnect",
-        {"disconnected_players": [x.name for x in get_game(gamecode).players if not x.isConnected]},
+        {"disconnected_players": disconnectedPlayerNames},
         room=get_game(gamecode).socket_id,
     )
+
     for player in get_players(gamecode):
         socketio.emit(
             "send_disconnected_playernames",
-            {"playernames": [x.name for x in get_game(gamecode).players if not x.isConnected]},
+            {"playernames": disconnectedPlayerNames},
             room=player.socket_id,
         )
-
-    get_game(gamecode).pings_from_players = []
 
 def handle_user_join(gameCode, name):
     if not get_game(gameCode).is_game_started:
