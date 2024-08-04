@@ -9,7 +9,7 @@ class SettingTypes:
 
 all_settings = [
     Setting(
-        "males_from_sweden",
+        "Males from Sweden",
         f"""
             {SELECT_HUMAN_AND_BIRTHDATE}
             {INSTANCE_HUMAN}
@@ -21,7 +21,7 @@ all_settings = [
         SettingTypes.BIRTHDATES,
     ),
     Setting(
-        "females_from_sweden",
+        "Females from Sweden",
         f"""
             {SELECT_HUMAN_AND_BIRTHDATE}
             {INSTANCE_HUMAN}

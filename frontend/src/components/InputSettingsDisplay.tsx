@@ -30,12 +30,29 @@ function InputSettingsDisplay(props: any) {
   };
 
   return (
-    <div className="settingsContainer">
-      <div className="settings">
+    <div className="settings-container">
+      <h1>Settings</h1>
+      <hr className="line"></hr>
+      <div className="pick-score-container">
+        <div className="settings-headers">Score</div>
+        <div className="pick-score-buttons-and-label">
+          <button className="pick-score-button" onClick={decrement}>
+            -
+          </button>
+          <div className="pick-score-label">{count}</div>
+          <button className="pick-score-button" onClick={increment}>
+            +
+          </button>
+        </div>
+      </div>
+      <hr className="line"></hr>
+      <div className="checkbox-container">
+        <div className="settings-headers">Card categories</div>
         {allSettings.map(({ description }, index) => {
           return (
             <div key={index}>
               <input
+                className="settings-checkbox"
                 type="checkbox"
                 id={`custom-checkbox-${index}`}
                 name={description}
@@ -43,23 +60,26 @@ function InputSettingsDisplay(props: any) {
                 checked={checkedSettings[index]}
                 onChange={() => updateSettings(index)}
               />
-              <label htmlFor={`custom-checkbox-${index}`}>{description}</label>
+              <label
+                className="settings-checkbox-label"
+                htmlFor={`custom-checkbox-${index}`}
+              >
+                {description}
+              </label>
             </div>
           );
         })}
       </div>
-      <div className="pickScoreContainer">
-        <button onClick={decrement}>-</button>
-        <p>{count}</p>
-        <button onClick={increment}>+</button>
-      </div>
+      <hr className="line"></hr>
+
       <button
+        className="confirm-settings"
         onClick={() => {
           confirmSettings();
         }}
       >
         Confirm
-      </button>{" "}
+      </button>
     </div>
   );
 }

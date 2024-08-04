@@ -51,7 +51,6 @@ label {
   .joingame-container {
     width: 100%;
     margin-top: 20%;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -59,7 +58,6 @@ label {
 
   .input-and-label {
     width: 80%;
-
     display: flex;
     flex-direction: column;
     margin-bottom: 5%;
@@ -90,15 +88,13 @@ label {
     margin-left: 5%;
     font-size: x-large;
     border-radius: 8px;
-    background-color: #d8e497;
-    border: none;
+    background-color: #97d8e4;
   }
 
   .join-game {
     font-size: xx-large;
     border-radius: 8px;
-    background-color: #d8e497;
-    border: none;
+    background-color: #97d8e4;
   }
 
   .error-text {
@@ -297,34 +293,92 @@ label {
   border-style: solid;
 }
 
-.settingsContainer {
-  position: absolute;
+.settings-container {
+  position: relative;
   background-color: rgb(5, 61, 65);
-  overflow-wrap: break-word;
-  border-style: solid;
-  border: 3px solid;
+  border: 3px solid black;
   box-sizing: border-box;
   height: 100%;
   width: 50%;
-  left: 50%;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  row-gap: 10px;
+  padding-left: 1%;
+  padding-right: 1%;
 }
 
-.settings {
-  position: absolute;
+.checkbox-container {
   display: flex;
-  flex-direction: column; /* stack flex items vertically */
-  justify-content: left; /* center items vertically, in this case */
-  align-items: left; /* center items horizontally, in this case */
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
   text-align: left;
 }
 
-.pickScoreContainer {
+.settings-checkbox {
+  transform: scale(1.5);
+  vertical-align: middle;
+}
+
+.settings-checkbox-label {
+  color: aliceblue;
+  font-size: large;
+  margin-left: 1%;
+  vertical-align: middle;
+}
+
+.confirm-settings {
+  font-size: xx-large;
+  border-radius: 8px;
+  background-color: #97d8e4;
+  position: absolute;
+  top: 90%;
+  left: 50%;
+}
+
+.confirm-settings:hover {
+  background-color: #65cfe2;
+}
+
+.pick-score-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: left; /* center items vertically, in this case */
+  align-items: left; /* center items horizontally, in this case */
+}
+
+.pick-score-buttons-and-label {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
+}
+
+.pick-score-button {
+  font-size: large;
+  border-radius: 8px;
+  background-color: #97d8e4;
+  width: 30px;
+}
+
+.pick-score-label {
+  margin-left: 1%;
+  margin-right: 1%;
+  font-size: large;
+  color: aliceblue;
+  width: 20px;
+}
+
+.settings-headers {
+  font-size: x-large;
+  width: fit-content;
+  color: aliceblue;
 }
 
 .scoreContainer {
   color: aliceblue;
+}
+
+.line {
+  width: 100%;
+  border-bottom: 1px solid black;
 }
