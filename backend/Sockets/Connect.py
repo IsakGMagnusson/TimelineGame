@@ -4,7 +4,6 @@ from classes import Game, Player
 from extensions import socketio
 from functions import *
 from tests.testdata import *
-from threading import Timer
 import time
 
 def handle_connect():

@@ -1,7 +1,6 @@
 from flask_socketio import emit
 from extensions import socketio
 from functions import *
-from settings.cardGenerator import get_cards_from_selected_settings
 from settings.settings import all_settings
 from tests.testdata import *
 from Sockets.Settings import *

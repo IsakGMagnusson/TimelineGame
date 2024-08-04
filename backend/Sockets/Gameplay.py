@@ -125,3 +125,10 @@ def go_next_turn(gameCode):
             {"isMyTurn": is_player_turn(gameCode, player)},
             room=player.socket_id,
         )
+
+def scroll_cards(gameCode, scroll_percent):
+    emit(
+        "scroll_cards",
+        {"scroll_percent": scroll_percent},
+        room=get_game(gameCode).socket_id,
+    )

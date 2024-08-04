@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CardData, Card_State } from "../../interfaces";
 import Card from "./Card";
 import { socket } from "../../Socket";
@@ -13,6 +13,9 @@ const TimeLine = (props: any) => {
     return new Promise((res) => setTimeout(res, delay));
   }
 
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  const [scrollTop, setScrollTop] = useState(0);
   async function revealDate(date: number) {
     const dateString = date.toString();
 
@@ -61,12 +64,22 @@ const TimeLine = (props: any) => {
       props.setScore(data.all_cards.length - 1);
     }
 
+    function scroll_cards(data: any) {
+      const windowWidth = window.innerWidth;
+      const elementTotalWidth = elementRef.current!.scrollWidth;
+      const convertedScrollPercent = (elementTotalWidth - windowWidth) / 100;
+
+      elementRef.current!.scrollLeft =
+        data.scroll_percent * convertedScrollPercent;
+    }
+
     socket.on("put_card_incorrect", on_put_card_incorrect);
     socket.on("move_card", move_card);
     socket.on("draw_card", draw_card);
     socket.on("put_card_correct", put_card_correct);
     socket.on("new_turn", new_turn);
     socket.on("fetch_cards", fetch_cards);
+    socket.on("scroll_cards", scroll_cards);
 
     return () => {
       socket.off("put_card_incorrect", on_put_card_incorrect);
@@ -75,6 +88,7 @@ const TimeLine = (props: any) => {
       socket.off("put_card_correct", put_card_correct);
       socket.off("new_turn", new_turn);
       socket.off("fetch_cards", fetch_cards);
+      socket.off("scroll_cards", scroll_cards);
     };
   }, [allActiveCards]);
 
@@ -83,14 +97,16 @@ const TimeLine = (props: any) => {
   }, []);
 
   return (
-    <div className="active-cards">
-      {[...allActiveCards]
-        .filter((card) => card.state != Card_State.REMOVED)
-        .map((card: CardData) => (
-          <div>
-            <Card card={card} activeCardDisplayDate={activeCardDisplayDate} />
-          </div>
-        ))}
+    <div className="card-holder" ref={elementRef}>
+      <div className="active-cards">
+        {[...allActiveCards]
+          .filter((card) => card.state != Card_State.REMOVED)
+          .map((card: CardData) => (
+            <div>
+              <Card card={card} activeCardDisplayDate={activeCardDisplayDate} />
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

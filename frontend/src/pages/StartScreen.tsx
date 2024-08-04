@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useSetName } from "../hooks/UseSetName";
 
 function App() {
-  //const [inputName, setInputName] = useState("");
   const [name, generateRandomName, readName] = useSetName();
 
   const [inputGameCode, setInputGameCode] = useState("");
@@ -47,19 +46,34 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <div>
-          <button
-            onClick={() => {
-              createGame();
-            }}
-          >
-            Create Game
-          </button>
-          <div>
-            Username:
+    <div className="startscreen">
+      <div className="creategame-container">
+        <button
+          className="create-game"
+          onClick={() => {
+            createGame();
+          }}
+        >
+          Create Game
+        </button>
+      </div>
+      <div className="joingame-container">
+        <div className="input-and-label">
+          <div className="join-text">Code</div>
+          <input
+            className="join-input"
+            autoComplete="off"
+            type="text"
+            id="fname"
+            name="fname"
+            onChange={changeGameCode}
+          />
+        </div>
+        <div className="input-and-label">
+          <div className="join-text">Name</div>
+          <div className="input-and-button">
             <input
+              className="join-input"
               autoComplete="off"
               type="text"
               id="fname"
@@ -67,28 +81,21 @@ function App() {
               onChange={(e) => readName(e.target.value)}
               value={name}
             />
-            <button onClick={generateRandomName}>random</button>
+            <button className="random-name-button" onClick={generateRandomName}>
+              ?
+            </button>
           </div>
-          <div>
-            Gamecode:
-            <input
-              autoComplete="off"
-              type="text"
-              id="fname"
-              name="fname"
-              onChange={changeGameCode}
-            />
-          </div>
-          <button
-            onClick={() => {
-              joinGame();
-            }}
-          >
-            Join Game
-          </button>
         </div>
-        {joinErrorCode}
-      </header>
+        <button
+          className="join-game"
+          onClick={() => {
+            joinGame();
+          }}
+        >
+          Play
+        </button>
+        <div className="error-text"> {joinErrorCode}</div>
+      </div>
     </div>
   );
 }

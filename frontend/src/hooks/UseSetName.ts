@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export function useSetName() {
   const [name, setName] = useState("");
@@ -11,19 +11,35 @@ export function useSetName() {
       "Green",
       "Old",
       "Broken",
-      "[Error]",
+      "Swimming",
+      "Perplexed",
+      "Howlin'",
+      "Rolling",
+      "Sticky",
+      "Wounded",
+      "Error",
     ];
-    const Nouns: string[] = ["jumper", "Benjamin", "dog", "[Error]", "bird"];
-    
-    const adjective = Adjectives[Math.floor(Math.random() * Adjectives.length)]
-    const noun = Nouns[Math.floor(Math.random() * Nouns.length)]
+    const Nouns: string[] = [
+      "jumper",
+      "Dennis",
+      "dog",
+      "Error",
+      "bike",
+      "bigfoot",
+      "uncle",
+      "head",
+      "computer",
+    ];
+
+    const adjective = Adjectives[Math.floor(Math.random() * Adjectives.length)];
+    const noun = Nouns[Math.floor(Math.random() * Nouns.length)];
 
     setName(`${adjective} ${noun}`);
   };
 
-  function read (input: string) {
+  function read(input: string) {
     setName(input);
-  };
+  }
 
   return [name, generateRandom, read] as const;
 }

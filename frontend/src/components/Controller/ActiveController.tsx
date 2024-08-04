@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 const ActiveController = (props: any) => {
   const moveCardPosition = (card_move_to: number) => {
@@ -10,33 +12,60 @@ const ActiveController = (props: any) => {
     props.setControllerState(props.ControllerState.AWAITING_RESPONSE);
   };
 
+  const [value, setValue] = useState<number>(20);
+
+  const OnChangeEventTriggerd = (newValue: any) => {
+    console.log("new Value", newValue);
+    setValue(newValue);
+    props.socket.emit("scroll_cards", props.gameCode, newValue);
+  };
+
   return (
-    <>
-      <button
-        className="rotation-button left"
-        onClick={() => {
-          moveCardPosition(-1);
-        }}
-      >
-        |------
-      </button>
-      <button
-        className="put-card-button"
-        onClick={() => {
-          putCard();
-        }}
-      >
-        Put card
-      </button>
-      <button
-        className="rotation-button right"
-        onClick={() => {
-          moveCardPosition(1);
-        }}
-      >
-        ------|
-      </button>
-    </>
+    <div className="controller-container">
+      <div className="card-button-container">
+        <button
+          className="rotation-button left"
+          onClick={() => {
+            moveCardPosition(-1);
+          }}
+        >
+          |------
+        </button>
+
+        <button
+          className="put-card-button"
+          onClick={() => {
+            putCard();
+          }}
+        >
+          Put card
+        </button>
+        <button
+          className="rotation-button right"
+          onClick={() => {
+            moveCardPosition(1);
+          }}
+        >
+          ------|
+        </button>
+      </div>
+      <div className="card-slider-container">
+        <Slider
+          value={value}
+          onChange={OnChangeEventTriggerd}
+          step={25}
+          trackStyle={{ backgroundColor: "lightblue", height: 10 }}
+          railStyle={{ backgroundColor: "lightblue", height: 10 }}
+          handleStyle={{
+            borderColor: "lightblue",
+            height: 20,
+            width: 20,
+            marginTop: -5,
+            backgroundColor: "#00008b",
+          }}
+        />
+      </div>
+    </div>
   );
 };
 

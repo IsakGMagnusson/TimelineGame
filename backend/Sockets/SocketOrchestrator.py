@@ -1,15 +1,7 @@
-from flask import request
-from flask_socketio import emit
-from classes import Game, Player
 from extensions import socketio
 from functions import *
-from settings.cardGenerator import get_cards_from_selected_settings
-from settings.settings import all_settings
 from tests.testdata import *
-import math
-from threading import Timer
 from engineio.payload import Payload
-import time
 from Sockets.Settings import *
 from Sockets.Gameplay import *
 from Sockets.Fetch import *
@@ -70,3 +62,6 @@ def socket_handle_user_join(gameCode, name):
 def socket_reconnect(gameCode, name):
     reconnect(gameCode, name)
 
+@socketio.on("scroll_cards")
+def socket_scroll_cards(gameCode, scroll_percent):
+    scroll_cards(gameCode, scroll_percent)

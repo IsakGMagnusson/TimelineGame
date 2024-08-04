@@ -1,5 +1,4 @@
 from flask_socketio import emit
-from classes import Game, Player
 from extensions import socketio
 from functions import *
 from settings.cardGenerator import get_cards_from_selected_settings
@@ -13,9 +12,10 @@ def confirm_settings(gameCode, confirmedSettings, win_score):
     get_cards(gameCode).extend(cards)
     # Assign starting timeline-card to players
     for player in games[gameCode].players:
-        card = get_game(gameCode).draw_card()
-        card["state"] = Card_State.LOCKED
-        player.timeline.append(card)
+        for x in range(15):
+            card = get_game(gameCode).draw_card()
+            card["state"] = Card_State.LOCKED
+            player.timeline.append(card)
         socketio.emit(
             "game_start", {"timeline": player.timeline}, room=player.socket_id
         )

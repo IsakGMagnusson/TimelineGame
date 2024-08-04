@@ -20,27 +20,124 @@ label {
   color: lightgray;
 }
 
+.startscreen {
+  width: 100%;
+  height: 80%;
+}
+
+@media (max-width: 800px) {
+  .create-game {
+    visibility: hidden;
+  }
+}
+
+@media (min-width: 800px) {
+  .create-game {
+    font-size: xx-large;
+    height: fit-content;
+  }
+}
+
+@media (min-width: 800px) {
+  .creategame-container {
+    height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 800px) {
+  .joingame-container {
+    width: 100%;
+    margin-top: 20%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .input-and-label {
+    width: 80%;
+
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5%;
+  }
+
+  .join-text {
+    color: aliceblue;
+    display: flex;
+    font-size: x-large;
+    align-self: auto;
+  }
+
+  .join-input {
+    width: 80%;
+    color: rgb(5, 63, 114);
+    display: flex;
+    font-size: x-large;
+  }
+
+  .input-and-button {
+    width: 100%;
+    color: rgb(5, 63, 114);
+    display: flex;
+    font-size: x-large;
+  }
+
+  .random-name-button {
+    margin-left: 5%;
+    font-size: x-large;
+    border-radius: 8px;
+    background-color: #d8e497;
+    border: none;
+  }
+
+  .join-game {
+    font-size: xx-large;
+    border-radius: 8px;
+    background-color: #d8e497;
+    border: none;
+  }
+
+  .error-text {
+    color: rgb(241, 106, 106);
+    display: flex;
+    font-size: x-large;
+    align-self: auto;
+    margin-top: 3%;
+  }
+}
+
 .squareBox {
   display: flex;
-
   overflow-wrap: break-word;
   vertical-align: top;
   text-align: left;
   border-style: solid;
 }
 
-.active-cards {
+.card-holder {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
-
-  flex-direction: row;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
-.active-cards-h2 {
+.card-holder-h2 {
   font-family: monospace;
+}
+
+.active-cards {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1%;
 }
 
 .square {
@@ -129,13 +226,27 @@ label {
     0px 0px 50px rgb(211, 112, 194), 0px 0px 10px #812f76, 0px 0px 10px #daa6cd;
 }
 
+.controller-container {
+  width: 90%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  height: 90%;
+  justify-content: space-between;
+}
+
 .put-card-button {
-  height: 50%;
+  height: 40%;
   width: 40%;
   background-color: antiquewhite;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  align-self: center;
 }
 
 .rotation-button {
@@ -144,12 +255,10 @@ label {
   background-color: antiquewhite;
 }
 
-.rotation-button.left {
-  margin-right: 0px;
-}
+.card-slider-container {
+  justify-content: center;
 
-.rotation-button.right {
-  margin-left: auto;
+  width: 25%;
 }
 
 .turn-box {
