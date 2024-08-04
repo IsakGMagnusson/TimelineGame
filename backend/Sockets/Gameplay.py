@@ -5,6 +5,7 @@ from tests.testdata import *
 import math
 from Sockets.Settings import *
 
+@socketio.on("move_card")
 def move_card(gameCode, move_to_index):
     old_index = get_game(gameCode).card_index
     get_game(gameCode).card_index = clamp(
@@ -18,6 +19,7 @@ def move_card(gameCode, move_to_index):
         room=get_game(gameCode).socket_id,
     )
 
+@socketio.on("put_card")
 def put_card(gameCode):
     sorted_cards = sort_cards_date(
         get_active_player(gameCode).get_all_non_removed_cards()
@@ -70,12 +72,14 @@ def put_card(gameCode):
             Card_State.ANIMATE, Card_State.REMOVED
         )
 
+@socketio.on("draw_card_or_new_turn")
 def draw_card_or_new_turn(gameCode):
     emit(
         "put_card_correct",
         room=get_active_player(gameCode).socket_id,
     )
 
+@socketio.on("draw_card")
 def draw_card(gameCode):
     games[gameCode].active_card = get_game(gameCode).draw_card()
     sorted_cards = sort_cards_date(
@@ -92,6 +96,7 @@ def draw_card(gameCode):
         room=get_game(gameCode).socket_id,
     )
 
+@socketio.on("go_next_turn")
 def go_next_turn(gameCode):
     get_active_player(gameCode).lock_placed_cards()
 
@@ -126,6 +131,7 @@ def go_next_turn(gameCode):
             room=player.socket_id,
         )
 
+@socketio.on("scroll_cards")
 def scroll_cards(gameCode, scroll_percent):
     emit(
         "scroll_cards",

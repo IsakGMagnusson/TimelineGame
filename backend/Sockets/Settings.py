@@ -5,6 +5,7 @@ from settings.cardGenerator import get_cards_from_selected_settings
 from settings.settings import all_settings
 from tests.testdata import *
 
+@socketio.on("confirm_settings")
 def confirm_settings(gameCode, confirmedSettings, win_score):
     cards = testcards
     # cards = get_cards_from_selected_settings(confirmedSettings)
