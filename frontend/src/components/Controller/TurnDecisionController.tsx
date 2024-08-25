@@ -46,7 +46,6 @@ const TurnDecisionController = (props: any) => {
 
   const DrawCard = () => {
     props.socket.emit("draw_card", props.gameCode);
-    props.setControllerState(props.ControllerState.ACTIVE);
   };
 
   return (

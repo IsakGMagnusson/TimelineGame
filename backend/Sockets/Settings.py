@@ -13,10 +13,9 @@ def confirm_settings(gameCode, confirmedSettings, win_score):
     get_cards(gameCode).extend(cards)
     # Assign starting timeline-card to players
     for player in games[gameCode].players:
-        for x in range(15):
-            card = get_game(gameCode).draw_card()
-            card["state"] = Card_State.LOCKED
-            player.timeline.append(card)
+        card = get_game(gameCode).draw_card()
+        card["state"] = Card_State.LOCKED
+        player.timeline.append(card)
         socketio.emit(
             "game_start", {"timeline": player.timeline}, room=player.socket_id
         )
@@ -29,9 +28,13 @@ def confirm_settings(gameCode, confirmedSettings, win_score):
 
     # set player turn
     for player in get_players(gameCode):
+        if is_player_turn(gameCode, player):
+            player.controller_state = Controller_State.ACTIVE
+        else: 
+            player.controller_state = Controller_State.INACTIVE
         socketio.emit(
-            "new_turn",
-            {"isMyTurn": is_player_turn(gameCode, player)},
+            "set_controller_state",
+            {"controller_state": player.controller_state},
             room=player.socket_id,
         )
     # start game

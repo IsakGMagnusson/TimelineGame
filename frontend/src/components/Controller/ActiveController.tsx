@@ -9,7 +9,6 @@ const ActiveController = (props: any) => {
 
   const putCard = () => {
     props.socket.emit("put_card", props.gameCode);
-    props.setControllerState(props.ControllerState.AWAITING_RESPONSE);
   };
 
   const [value, setValue] = useState<number>(20);

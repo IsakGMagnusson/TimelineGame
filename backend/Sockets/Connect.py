@@ -96,8 +96,6 @@ def reconnect(gameCode, name):
         if player.name == name:
             player.socket_id = request.sid
             get_game(gameCode).pings_from_players.append(player.name)
-            socketio.emit(
-                "reconnect_as_player",
-                {"isMyTurn": is_player_turn(gameCode, player)},
-                room=player.socket_id,
-            )
+
+
+

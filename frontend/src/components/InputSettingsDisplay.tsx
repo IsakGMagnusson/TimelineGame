@@ -2,12 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Setting } from "../interfaces";
 import { socket } from "../Socket";
-import useCount from "../hooks/useCount";
+import useStartScoreCount from "../hooks/useStartScoreCount";
 
 function InputSettingsDisplay(props: any) {
   const [allSettings, setAllSettings] = useState<Setting[]>([]);
   const [checkedSettings, setCheckedSettings] = useState<boolean[]>([]);
-  const { count, increment, decrement } = useCount(10);
+  const { count, increment, decrement } = useStartScoreCount(10);
 
   useEffect(() => {
     socket.emit("fetch_all_settings");

@@ -15,7 +15,6 @@ function Game() {
   const [name, setPlayerName] = useState(location.state.name);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [timeline, setTimeline] = useState([]);
-  const [isMyTurn, setIsMyTurn] = useState(false);
   const [disconnectedPlayerNames, setDisconnectedPlayerNames] = useState([]);
 
   useEffect(() => {
@@ -29,12 +28,6 @@ function Game() {
     socket.on("game_start", function (data) {
       setTimeline(data.timeline);
       setIsGameStarted(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    socket.on("new_turn", function (data) {
-      setIsMyTurn(data.isMyTurn);
     });
   }, []);
 
@@ -56,12 +49,6 @@ function Game() {
       socket.emit("user_send_pong", gameCode, name);
     });
   }, [name]);
-
-  useEffect(() => {
-    socket.on("reconnect_as_player", function (data) {
-      setIsMyTurn(data.isMyTurn);
-    });
-  }, []);
 
   const reconnect = (name: string) => {
     setPlayerName(name);
@@ -89,13 +76,7 @@ function Game() {
               </div>
             </>
           ) : (
-            <>
-              {isMyTurn ? (
-                <Controller socket={socket} gameCode={gameCode} />
-              ) : (
-                <h1>not your turn!</h1>
-              )}
-            </>
+            <Controller socket={socket} gameCode={gameCode} />
           )}
         </>
       ) : (

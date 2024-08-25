@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function useCount(initialCount: number = 0) {
+function useStartScoreCount(initialCount: number = 0) {
   const [count, setCount] = useState(initialCount);
 
   const increment = () => {
@@ -19,4 +19,4 @@ function useCount(initialCount: number = 0) {
   };
 }
 
-export default useCount;
+export default useStartScoreCount;

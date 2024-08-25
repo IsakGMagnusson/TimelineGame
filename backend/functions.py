@@ -5,7 +5,7 @@ from classes import *
 games = {}
 
 
-def is_date_in_order(cards: [Card], card_index: int) -> bool:
+def is_card_date_in_order(cards: [Card], card_index: int) -> bool:
     left_card = cards[max(0, card_index - 1)]
     right_card = cards[min(card_index + 1, len(cards) - 1)]
     card = cards[card_index]

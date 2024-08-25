@@ -2,51 +2,45 @@ import React, { useEffect, useState } from "react";
 import ActiveController from "./ActiveController";
 import AwaitingResponseController from "./AwaitingResponseController";
 import TurnDecisionController from "./TurnDecisionController";
+import { Controller_State } from "../../interfaces";
 
 const Controller = (props: any) => {
-  enum ControllerState {
-    ACTIVE = "active",
-    TURN_DECISION = "turn_decision",
-    AWAITING_RESPONSE = "awaiting_response",
-  }
-
-  const [controllerState, setControllerState] = useState<ControllerState>(
-    ControllerState.ACTIVE
+  const [controllerState, setControllerState] = useState<Controller_State>(
+    Controller_State.ACTIVE
   );
 
   useEffect(() => {
-    props.socket.on("put_card_correct", function () {
-      setControllerState(ControllerState.TURN_DECISION);
-    });
+    console.log("aaa");
+    props.socket.emit("fetch_controller_state", props.gameCode);
   }, []);
 
   useEffect(() => {
-    props.socket.on("new_turn", function () {
-      setControllerState(ControllerState.ACTIVE);
+    props.socket.on("set_controller_state", function (data: any) {
+      console.log(data.controller_state);
+      setControllerState(data.controller_state);
     });
   }, []);
 
-  function loadControllerFromState(state: ControllerState) {
-    if (state == ControllerState.ACTIVE)
+  function loadControllerFromState(state: Controller_State) {
+    if (state == Controller_State.ACTIVE)
       return (
         <ActiveController
           socket={props.socket}
           gameCode={props.gameCode}
-          setControllerState={setControllerState}
-          ControllerState={ControllerState}
+          ControllerState={Controller_State}
         />
       );
-    else if (state == ControllerState.AWAITING_RESPONSE)
+    else if (state == Controller_State.AWAITING_RESPONSE)
       return <AwaitingResponseController />;
-    else if (state == ControllerState.TURN_DECISION)
+    else if (state == Controller_State.TURN_DECISION)
       return (
         <TurnDecisionController
           socket={props.socket}
           gameCode={props.gameCode}
-          setControllerState={setControllerState}
-          ControllerState={ControllerState}
         />
       );
+    else if (state == Controller_State.INACTIVE)
+      return <div>Not your turn!</div>;
   }
 
   return <>{loadControllerFromState(controllerState)}</>;

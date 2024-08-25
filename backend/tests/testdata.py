@@ -124,7 +124,6 @@ testcards: list[Card] = [
         "date": 1904,
         "state": 1,
     },
-    {"question": "What year was Svante Pääbo born?1955", "date": 1955, "state": 1},
     {
         "question": "What year was Sigismund III Vasa born?1566",
         "date": 1566,

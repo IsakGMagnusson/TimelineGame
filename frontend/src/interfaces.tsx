@@ -11,6 +11,14 @@ export interface Setting {
 }
 
 //TODO: fetch from backend
+export enum Controller_State {
+  ACTIVE = 0,
+  TURN_DECISION = 1,
+  AWAITING_RESPONSE = 2,
+  INACTIVE = 3,
+}
+
+//TODO: fetch from backend
 export enum Card_State {
   IN_PILE = 0,
   LOCKED = 1,

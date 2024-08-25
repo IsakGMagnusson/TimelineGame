@@ -12,10 +12,10 @@ class Game:
         self.winners = []
         self.pings_from_players = []
 
+
     def draw_card(self):
         card = self.cards.pop()
         return card
-
 
 class Card:
     def __init__(self, question, date):
@@ -43,6 +43,7 @@ class Player:
         self.name = name
         self.timeline = []
         self.isConnected = True
+        self.controller_state = Controller_State.ACTIVE
 
     def get_all_non_removed_cards(self):
         return [card for card in self.timeline if card["state"] != Card_State.REMOVED]
@@ -61,6 +62,13 @@ class Player:
         for card in self.timeline:
             if card["state"] == from_state:
                 card["state"] = to_state
+
+class Controller_State:
+    ACTIVE = 0
+    TURN_DECISION = 1
+    AWAITING_RESPONSE = 2
+    INACTIVE = 3
+
 
 class Setting:
     def __init__(self, description, query, type):

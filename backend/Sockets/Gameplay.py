@@ -21,17 +21,28 @@ def move_card(gameCode, move_to_index):
 
 @socketio.on("put_card")
 def put_card(gameCode):
+    for player in get_players(gameCode):
+        if is_player_turn(gameCode, player):
+            player.controller_state = Controller_State.AWAITING_RESPONSE
+        else: 
+            player.controller_state = Controller_State.INACTIVE
+        socketio.emit(
+            "set_controller_state",
+            {"controller_state": player.controller_state},
+            room=player.socket_id,
+        )
+
     sorted_cards = sort_cards_date(
         get_active_player(gameCode).get_all_non_removed_cards()
     )
     sorted_cards.insert(get_game(gameCode).card_index, get_game(gameCode).active_card)
 
     # If answer correct
-    if is_date_in_order(sorted_cards, get_game(gameCode).card_index):
+    if is_card_date_in_order(sorted_cards, get_game(gameCode).card_index):
         get_active_player(gameCode).place_card(get_game(gameCode).active_card)
 
         # If won
-        if len(get_active_player(gameCode).get_all_non_removed_cards()) == get_game(gameCode).score_to_win:
+        if len(get_active_player(gameCode).get_all_non_removed_cards()) >= get_game(gameCode).score_to_win:
             emit(
                 "player_won",
                 {
@@ -72,12 +83,21 @@ def put_card(gameCode):
             Card_State.ANIMATE, Card_State.REMOVED
         )
 
+    get_game(gameCode).active_card = Card("", 0)
+    
+    
 @socketio.on("draw_card_or_new_turn")
 def draw_card_or_new_turn(gameCode):
-    emit(
-        "put_card_correct",
-        room=get_active_player(gameCode).socket_id,
-    )
+    for player in get_players(gameCode):
+        if is_player_turn(gameCode, player):
+            player.controller_state = Controller_State.TURN_DECISION
+        else: 
+            player.controller_state = Controller_State.INACTIVE
+        socketio.emit(
+            "set_controller_state",
+            {"controller_state": player.controller_state},
+            room=player.socket_id,
+        )
 
 @socketio.on("draw_card")
 def draw_card(gameCode):
@@ -95,6 +115,17 @@ def draw_card(gameCode):
         },
         room=get_game(gameCode).socket_id,
     )
+
+    for player in get_players(gameCode):
+        if is_player_turn(gameCode, player):
+            player.controller_state = Controller_State.ACTIVE
+        else: 
+            player.controller_state = Controller_State.INACTIVE
+        socketio.emit(
+            "set_controller_state",
+            {"controller_state": player.controller_state},
+            room=player.socket_id,
+        )
 
 @socketio.on("go_next_turn")
 def go_next_turn(gameCode):
@@ -125,9 +156,13 @@ def go_next_turn(gameCode):
     )
 
     for player in get_players(gameCode):
+        if is_player_turn(gameCode, player):
+            player.controller_state = Controller_State.ACTIVE
+        else: 
+            player.controller_state = Controller_State.INACTIVE
         socketio.emit(
-            "new_turn",
-            {"isMyTurn": is_player_turn(gameCode, player)},
+            "set_controller_state",
+            {"controller_state": player.controller_state},
             room=player.socket_id,
         )
 
